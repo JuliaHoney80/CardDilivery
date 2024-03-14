@@ -1,6 +1,7 @@
 package ru.netology.carddelivery;
 
 import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.selector.ByText;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -23,16 +24,16 @@ public class CardDeliveryTest {
     public void shouldSendCardDeliveryFormSuccessful() {
         open("http://localhost:9999");
         $("[data-test-id='city'] input").setValue("Москва");
-        String planningDate = generateDate(10, "dd.MM.YYYY");
+        String planningDate = generateDate(5, "dd.MM.YYYY");
         $("[data-test-id='date'] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.DELETE);
         $("[data-test-id='date'] input").setValue(planningDate);
         $("[data-test-id='name'] input").setValue("Петров Иван Иванович");
         $("[data-test-id='phone'] input").setValue("+79031234567");
         $("[data-test-id ='agreement']").click();
         $("button.button").click();
-        $("notification__content")
+        $("[data-test-id='notification']")
                 .shouldBe(Condition.visible, Duration.ofSeconds(15))
-                .shouldHave(Condition.exactText("Встреча успешно забронирована на 21.03.2024" + planningDate));
+                .shouldHave(Condition.exactText("Успешно! Встреча успешно забронирована на " + planningDate));
 
 
 
